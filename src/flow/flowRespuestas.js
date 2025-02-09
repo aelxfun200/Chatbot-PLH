@@ -43,7 +43,7 @@ const formatExtractedInfo = (originalInfo, response) => {
 };
 
 export const flowRespuestas = () => {
-    return addKeyword('')
+    return addKeyword('EXTERNOCLEIDO_MASTOIDEO_2000')
         .addAnswer('🔄 Iniciando flow de respuestas...')
         .addAction(async (ctx, { flowDynamic }) => {
             try {

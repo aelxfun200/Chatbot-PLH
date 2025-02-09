@@ -2,6 +2,10 @@ import { addKeyword, EVENTS } from '@builderbot/bot';
 import axios from 'axios';
 import { OpenAI } from 'openai';
 import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 // Initialize OpenAI client with direct API key
 const apiKey = process.env.OPENAI_API_KEY;
@@ -320,10 +324,11 @@ const sendToAPI = async (data) => {
     }
 };
 
-// Main flow
+// Main flow -> Aquí debería ser un addResponse, para que no se active directamente si le dices un 'hola'
 export const flowOfertas = (chatgptClass) => {
-    return addKeyword(REGEX_ANY_CHARACTER, { regex: true })
+    return addKeyword(EVENTS.ACTION)
         .addAction(async (ctx, { flowDynamic, state }) => {
+            console.log('Se llega al puto flow de oferas');
             try {
                 // Verificar si el mensaje viene del número específico de presupuestos
                 if (ctx.from === '34684713364') {
@@ -347,7 +352,7 @@ export const flowOfertas = (chatgptClass) => {
                 conversation.push({ role: "user", content: ctx.body });
                 
                 // If this is the first message, add initial greeting
-                if (conversation.length === 1) {
+                if (conversation.length === 0) {
                     const greeting = "¡Hola! Soy el asistente virtual de piscinas. ¿En qué puedo ayudarte hoy?";
                     await flowDynamic(greeting);
                     conversation.push({ role: "assistant", content: greeting });
